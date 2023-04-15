@@ -1,4 +1,7 @@
 const express=require('express');
 const route=express.Router();
+const signupController=require('../controller/signup')
 
-route.get(/login)
+route.post("/",signupController.adduser);
+
+module.exports=route;
