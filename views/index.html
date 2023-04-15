@@ -34,7 +34,7 @@
 
       <div class="sign-up">
         <h1>Sign Up</h1>
-        <p class="massage" style="color: red;"></p>
+        <p id="massage" style="color: red;"></p>
         <form onsubmit="massage(event)"  >
             <input type="text" class="text-name" name="name" id="name" placeholder="name..." required>
             
@@ -55,6 +55,7 @@
 </body>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
+   
 async function massage(e){
   e.preventDefault();
   const data={
@@ -71,14 +72,21 @@ async function massage(e){
     },
     body:JSON.stringify(data)
   }
+  let massage=document.getElementById('massage')
   axios.post("http://localhost:4000",data)
+  
   .then((res)=>{
     console.log(res);
     if(res.status===201){
+      alert('Successfuly signed up')
       console.log('user added successfully')
      // window.location.href="http://localhost:4000/frontend/login.html"
-    }else{
-      const massage=document.getElementById('massage')
+    }else if(res.status===203){
+     
+      massage.innerHTML='user already exist'
+    }
+    else{
+    
       massage.innerHTML='network err'
     }
   })

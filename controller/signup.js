@@ -1,11 +1,19 @@
 const User=require('../models/user')
 const bcrypt=require('bcrypt');
 
-exports.adduser=(req,res)=>{
+exports.adduser=async(req,res)=>{
    console.log("hello")
     const data=req.body;
-    console.log(data)
-    //res.sendStatus(200)
+   // console.log(data)
+    const e=await User.findAll({
+        where:{
+            email:data.email
+        }
+    })
+    console.log(e[0].email)
+    if(e[0].email===data.email){
+        res.status(203).json({massage :'user already exist'})
+    }else{
         bcrypt.hash(data.password,10,async(err,password)=>{
             User.create({
                 name:data.name,
@@ -26,5 +34,7 @@ exports.adduser=(req,res)=>{
                })
                
             })
+    }
+       
     }
    
