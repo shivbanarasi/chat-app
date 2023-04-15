@@ -5,15 +5,14 @@ exports.adduser=async(req,res)=>{
    console.log("hello")
     const data=req.body;
    // console.log(data)
-    const e=await User.findAll({
+    const e=await User.findOne({
         where:{
             email:data.email
         }
     })
-    console.log(e[0].email)
-    if(e[0].email===data.email){
-        res.status(203).json({massage :'user already exist'})
-    }else{
+    console.log(e)
+    if(e===null){
+        
         bcrypt.hash(data.password,10,async(err,password)=>{
             User.create({
                 name:data.name,
@@ -34,6 +33,8 @@ exports.adduser=async(req,res)=>{
                })
                
             })
+    }else{
+        res.status(203).json({massage :'user already exist'})
     }
        
     }

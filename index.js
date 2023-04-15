@@ -12,7 +12,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
     extended:true
 }))
-app.use("/",express.static(path.join(__dirname,"./",'views')))
+app.use("/views",express.static(path.join(__dirname,"./",'views')))
 console.log(path.join(__dirname,"./",'views'))
 
 app.use(route)
