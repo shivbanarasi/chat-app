@@ -11,4 +11,6 @@ route.post('/views/login.html',logincontroller.loginuser)
 
 route.post('/views/display.html',authorization.authenticate,contentController.addMassage)
 
+route.get('/views/getdata',authorization.authenticate,contentController.getdata)
+
 module.exports=route;

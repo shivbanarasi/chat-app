@@ -1,3 +1,4 @@
+const { response } = require('express');
 const Massage=require('../models/chatMassage');
 
 exports.addMassage=async(req,res)=>{
@@ -8,6 +9,17 @@ exports.addMassage=async(req,res)=>{
         massage:data.massage,
         userId:userId
     })
-
     res.status(201).json({data})
+}
+
+exports.getdata=(req,res)=>{
+    const userId=req.user.id
+    Massage.findAll({
+        where:{
+            userId:userId
+        }
+    })
+    .then(response=>{
+        res.status(200).json({response})
+    })
 }
