@@ -19,7 +19,7 @@ exports.loginuser=(req,res)=>{
     }
   }).then((loginuser)=>{
     console.log(loginuser[0].email);
-    // if(i.email===email){
+     if(loginuser[0].email===email){
        console.log(loginuser[0].password)
        bcrypt.compare(password, loginuser[0].password, function(err, result) {
          
@@ -29,13 +29,19 @@ res.status(201).json({massage:'user logged in successfully',token:generateExessT
               
 }else{
 console.log('password does not match')
-res.sendStatus(404)
+res.status(404).json({massage:'password not mathed'})
 }
 })     
-    })
+    }else{
+      res.status(401).json({
+        massage:'user not found'
+      })
+    }}
+    )
     .catch((err)=>{
       res.sendStatus(404)
     })
+
      
        
           }

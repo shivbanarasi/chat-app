@@ -29,5 +29,26 @@
           </div>
         </div>
       </nav>
+
+      <h1>this is your chat application</h1>
+      
+        <div style="height: 400px; width: 70%; border: 2px black solid; margin: 0 0 0 13%;">
+          <p id="yourMassage"></p>
+        </div>
+       <div style="background-color: aqua; width: 70%; margin: 0 0 5% 13%;">
+        <label for="massage"></label>
+        <input type="text" name="massage" id="massage" placeholder="write your massage here..." style="width: 83%;">
+        <button onclick="massage()" style="width: 100px; background-color: blue;color: white;">send</button>
+       </div>
+        
 </body>
+<script>
+  async function massage(){
+    
+   let mass=document.getElementById('massage').value;
+   const para=document.createElement('p');
+   para.innerHTML=mass;
+   document.getElementById('yourMassage').appendChild(para)
+  }
+</script>
 </html>

@@ -68,12 +68,15 @@ function massage(e){
     if(res.status==201){
       localStorage.setItem('token',res.data.token)
       window.location.href="http://localhost:4000/views/display.html"
-    }else{
-     throw new error('err')
-      
     }
   })
   .catch((err)=>{
+    if(err.status==401){
+     
+     document.getElementById('massage').innerHTML='user not found';
+   }else if(err.status==404){
+     document.getElementById('massage').innerHTML='password does not match'; 
+   }
     document.getElementById('massage').innerHTML='invalid credentials';
   });
 }

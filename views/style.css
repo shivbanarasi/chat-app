@@ -17,15 +17,7 @@
      padding-bottom: 10px;
      font-size: 5vw;
    }
-   .sign-up button{
-    color: white;
-    background-color: rgb(141, 41, 8);
-    border: 1px black solid;
-    border-radius: 20px;
-    margin-top: 25px;
-    padding: 2% 33% 2% 33%;
-    font-size: 2vw;
-  }
+
 
    .text-name{
      border-radius: 20px;
@@ -34,19 +26,7 @@
      margin-bottom: 10px;
    }
 
-table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
 
-td, th {
-  border: 1px solid wheat;
-  text-align: left;
-  padding: 8px;
-  color: white;
-  font-size: 2vw;
-}
 input[type=text], select, textarea,button {
   width: 100%;
   padding: 10px;
@@ -55,11 +35,7 @@ input[type=text], select, textarea,button {
   border-radius: 4px;
   resize: vertical;
 }
-tr:nth-child(even) {
-  background-color: #0009;
-  color: white;
-  font-size: 2vw;
-}
+
 .exp{
     background-color: #9788;
         width: 900px;
