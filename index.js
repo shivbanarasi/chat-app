@@ -3,6 +3,7 @@ const path=require('path')
 const sequelize=require('./util/database')
 require('dotenv').config();
 const User=require('./models/user')
+const Massage=require('./models/chatMassage')
 const route=require('./route/route')
 const bodyParser=require('body-parser')
 const app=express();
@@ -16,6 +17,9 @@ app.use("/views",express.static(path.join(__dirname,"./",'views')))
 console.log(path.join(__dirname,"./",'views'))
 
 app.use(route)
+
+User.hasMany(Massage);
+Massage.belongsTo(User)
 
 sequelize.sync();
 
