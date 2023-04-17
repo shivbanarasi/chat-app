@@ -1,10 +1,11 @@
 const { response } = require('express');
 const Massage=require('../models/chatMassage');
+const User=require('../models/user')
 
 exports.addMassage=async(req,res)=>{
     const userId=req.user.id;
     const data=req.body;
-    console.log(data,userId)
+    //console.log(data,userId)
     Massage.create({
         massage:data.massage,
         userId:userId
