@@ -32,8 +32,8 @@
 
       <h1>this is your chat application</h1>
       
-        <div id="yourMassage" style="height: 400px; width: 70%; border: 2px black solid; margin: 0 0 0 13%;">
-          <p ></p>
+        <div id="yourMassage" style="height: 400px; width: 70%; border: 2px black solid; margin: 0 0 0 13%; overflow-y: auto;">
+         <p id="ok"></p>
         </div>
        <div style="background-color: aqua; width: 70%; margin: 0 0 5% 13%;">
         <label for="massage"></label>
@@ -49,33 +49,49 @@
     const data={
     massage:document.getElementById("massage").value
   }
-  //   const para=document.createElement('p');
-  //  para.innerHTML=data.massage;
-  //  document.getElementById('yourMassage').appendChild(para)
-  printMassage(data.massage)
+   printMassage(data.massage)
     
    const response=await axios.post('http://localhost:4000/views/display.html',data,{headers:{'Authorization':token}});
-   const res=await response.data;
-  // console.log(res.data.massage)
-   
+   const res=await response.data; 
   }
 
-  async function getdata(){
+  //async function getdata(){
+  //   const response=await axios.get('http://localhost:4000/views/getdata',{headers:{'Authorization':token}})
+  //   const res=await response.data;
+  //   console.log(res)
+  //  for(let i of res.response){
+  //   console.log(i.massage)
+  //   printMassage(i.massage)
+  //  }
+  
+ // }
+
+ // getdata()
+  setInterval(async()=>{
+    // window.location.href="http://localhost:4000/views/display.html"
     const response=await axios.get('http://localhost:4000/views/getdata',{headers:{'Authorization':token}})
     const res=await response.data;
-    console.log(res)
+    //printMassage(res)
+    //console.log(res)
+  // localStorage.setItem('data',JSON.stringify(res))
    for(let i of res.response){
     console.log(i.massage)
-    printMassage(i.massage)
-   }
-  }
-  getdata();
+   printMassage(i.massage)
+    }
+  },1000)
 
-
- function printMassage(data){
-  const para=document.createElement('p');
+ async function printMassage(data){
+  //const data=await JSON.parse(localStorage.getItem("data"))
+  //for(let i of data.response){
+    if(data!=document.getElementById(data).textContent){
+      const para=document.createElement('p');
+    para.id=data
    para.innerHTML=`you : ${data}`;
    document.getElementById('yourMassage').appendChild(para)
- }
+    }
+    
+  }
+  
+ //printMassage()
 </script>
 </html>
