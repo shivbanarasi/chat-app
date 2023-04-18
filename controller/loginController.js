@@ -12,13 +12,13 @@ function generateExessToken(id){
 
 exports.loginuser=(req,res)=>{
     const {email,password}=req.body;
-    console.log(password,email)
+    //console.log(password,email)
      User.findAll({
       where:{
          email:email 
     }
   }).then((loginuser)=>{
-    console.log(loginuser[0].email);
+    //console.log(loginuser[0].email);
      if(loginuser[0].email===email){
        console.log(loginuser[0].password)
        bcrypt.compare(password, loginuser[0].password, function(err, result) {

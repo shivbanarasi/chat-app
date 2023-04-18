@@ -49,49 +49,40 @@
     const data={
     massage:document.getElementById("massage").value
   }
-   printMassage(data.massage)
+  // printMassage(data.massage)
     
    const response=await axios.post('http://localhost:4000/views/display.html',data,{headers:{'Authorization':token}});
    const res=await response.data; 
   }
-
-  //async function getdata(){
-  //   const response=await axios.get('http://localhost:4000/views/getdata',{headers:{'Authorization':token}})
-  //   const res=await response.data;
-  //   console.log(res)
-  //  for(let i of res.response){
-  //   console.log(i.massage)
-  //   printMassage(i.massage)
-  //  }
+  let id=0;
+  async function getdata(){
+    console.log(id)
+    axios.get(`http://localhost:4000/views/getdata/${id}`,{headers:{'Authorization':token}})
+    .then( res=>{
+      for(let i=id;i<res.data.response.length;i++){
+    console.log(res.data.response[i].massage)
+    printMassage(res.data.response[i].massage)
+    id=i
   
- // }
-
- // getdata()
-  setInterval(async()=>{
-    // window.location.href="http://localhost:4000/views/display.html"
-    const response=await axios.get('http://localhost:4000/views/getdata',{headers:{'Authorization':token}})
-    const res=await response.data;
-    //printMassage(res)
-    //console.log(res)
-  // localStorage.setItem('data',JSON.stringify(res))
-   for(let i of res.response){
-    console.log(i.massage)
-   printMassage(i.massage)
+   }
+   id=res.data.response.length
+   
     }
-  },1000)
+    ) 
+ }
+console.log(id)
+ getdata()
+
+
+ setInterval(()=>getdata() ,1000)
+  
 
  async function printMassage(data){
-  //const data=await JSON.parse(localStorage.getItem("data"))
-  //for(let i of data.response){
-   
       const para=document.createElement('p');
     para.id=data
    para.innerHTML=`you : ${data}`;
    document.getElementById('yourMassage').appendChild(para)
     }
     
-  }
-  
- //printMassage()
 </script>
 </html>

@@ -5,11 +5,11 @@ require('dotenv').config()
 const authenticate=(req,res,next)=>{
     try{
         const token=req.header("Authorization");
-        console.log('token=',token);
+        //console.log('token=',token);
         const user=jwt.verify(token,'totototo');
-        console.log(user)
+       // console.log(user)
         User.findByPk(user.userId).then(user=>{
-            console.log(JSON.stringify(user));
+            //console.log(JSON.stringify(user));
             req.user=user;
             next();
         })

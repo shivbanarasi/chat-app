@@ -14,13 +14,19 @@ exports.addMassage=async(req,res)=>{
 }
 
 exports.getdata=(req,res)=>{
+    const id=req.params.id;
+    console.log(id)
     const userId=req.user.id
     Massage.findAll({
         where:{
-            userId:userId
+            userId:userId,
+    
         }
     })
     .then(response=>{
+       
+      
         res.status(200).json({response})
+        
     })
 }
