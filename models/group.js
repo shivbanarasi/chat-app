@@ -9,6 +9,9 @@ const Group=sequelize.define("group",{
         type:Sequlize.STRING,
         allowNull:false
     },
+    admin:{
+        type:Sequlize.INTEGER
+    },
    
     Members:{
         type:Sequlize.INTEGER

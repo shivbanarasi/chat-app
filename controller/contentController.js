@@ -49,22 +49,32 @@ exports.addgroup=async(req,res)=>{
     const userId=req.user.id;
     const data=req.body;
     console.log(`${userId+data.name}`)
-    
+    const user=await User.findAll();
+    console.log(user)
     Group.create({
         name:data.name,
         groupId:`${userId+data.name}`,
+        admin:userId,
         Members:userId
     }).then(resp=>{
-        console.log(resp)
-        res.status(201).json({massage:"group created succcessfully",resp})
-    })
-}
+        
+                res.status(201).json({massage:"group created succcessfully",resp})
+            }
+        )
+       
+    }
+
 
 exports.list=(req,res)=>{
-    
+  const id=req.user.id;  
  Group.findAll()
  .then(resp=>{
-    res.status(200).json({resp})
+    User.findAll().then(
+        response=>{
+            console.log(response)
+            res.status(201).json({resp,response,id:id})
+        }
+    )
  })
 }
 
@@ -73,8 +83,23 @@ exports.addgroupuser=(req,res)=>{
     const userId=req.user.id;
     Group.create({
         groupId:data.groupId,
-        Members:userId
+        Members:data.id
 }).then(resp=>{
-    res.status(201),json({resp})
+    res.status(201).json({resp})
 })
+}
+
+exports.showusers=(req,res)=>{
+    User.findAll()
+    .then(response=>{
+        res.status(201).json({response})
+    })
+}
+
+exports.getgroupdata=(req,res)=>{
+    const id=req.user.id;
+    Group.findAll()
+    .then(response=>{
+        res.status(200).json({response,id:id})
+    })
 }

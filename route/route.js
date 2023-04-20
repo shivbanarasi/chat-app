@@ -17,6 +17,10 @@ route.get('/views/grouplist',authorization.authenticate,contentController.list)
 
 route.post('/views/addgroupuser',authorization.authenticate,contentController.addgroupuser)
 
+route.get('/views/showusers',contentController.showusers)
+
+route.get("/views/getgroupdata",authorization.authenticate,contentController.getgroupdata)
+
 route.get('/views/getdata/:id/:groupId',authorization.authenticate,contentController.getdata)
 
 module.exports=route;

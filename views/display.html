@@ -66,6 +66,7 @@
     console.log(data.groupId)
    const response=await axios.post('http://localhost:4000/views/display.html',data,{headers:{'Authorization':token}});
    const res=await response.data; 
+
   }
   let id=0;
   //let name='';
@@ -73,7 +74,7 @@
    // console.log(id)
     axios.get(`http://localhost:4000/views/getdata/${id}/${groupId}`,{headers:{'Authorization':token}})
     .then( res=>{
-      console.log(res.data)
+      //console.log(res.data)
       for(let i=id;i<res.data.response.length;i++){
     //console.log(res.data.response[i].massage)
     printMassage(res.data.response[i].massage,res.data.response[i].name)
@@ -86,7 +87,7 @@
     }
     ) 
  }
-console.log(id)
+//console.log(id)
  getdata()
 
  async function creategroup(){
@@ -96,44 +97,102 @@ console.log(id)
   axios.post("http://localhost:4000/views/group",group,{headers:{'Authorization':token}})
   .then(response=>{
     alert('group created successfully')
-    console.log(response)
+   // console.log(response)
   })
  }
 
  function grouplist(){
   axios.get("http://localhost:4000/views/grouplist",{headers:{'Authorization':token}})
  .then(res=>{
-  console.log(res.data.resp.length);
+  //console.log(res);
+ 
   for(let i=0;i<res.data.resp.length;i++){
-    if(res.data.resp[i].name!=null){
+    if(res.data.id===res.data.resp[i].admin&&res.data.resp[i].name!=null){
+    
       let butt=document.createElement('button');
-    butt.innerHTML=`${res.data.resp[i].name}`;
+    butt.innerHTML=`join ${res.data.resp[i].name}`;
    butt.id=`${res.data.resp[i].name}`
    butt.addEventListener("click",()=>{
-    showgroup(res.data.resp[i].groupId)
+    users(res.data.resp[i].groupId,res.data.resp[i].name)
+    //showgroup(res.data.resp[i].groupId)
    })
     document.getElementById('created').appendChild(butt)
     }
+  // else if(res.data.resp[i].Members!=res.data.id){
+  //     addgroupusers(res.data.resp[i].groupId,res.data.id,res.data.resp[i].name)
+  //   }
+}
+// for(let i=0;i<res.data.resp.length;i++){
+//   if(res.data.id==res.data.resp[i].Members){
+//     addgroupusers(res.data.resp[i].groupId,res.data.id,res.data.resp[i].name)
+//   }
+// }
+  
 
-
-  }
  })
  }
 
+
  grouplist();
 
- function showgroup(groupId){
-  // data={
-  //   groupId:groupId
-  // }
-  // axios.post("http://localhost:4000/views/addgroupuser",data,{headers:{'Authorization':token}})
-  // .then(resp=>{
-  //   console.log(resp.status)
-    localStorage.setItem('groupId',groupId)
-    window.location.href="http://localhost:4000/views/display.html"
-  //   document.getElementById
-  //   }
-  // )
+ function users(groupId,name){
+  axios.get('http://localhost:4000/views/showusers')
+  .then(res=>{
+   // console.log(res)
+    for(let i=0;i<res.data.response.length;i++){
+      let showuserButt=document.createElement('button');
+      showuserButt.innerHTML=`join ${res.data.response[i].name}`;
+      showuserButt.addEventListener("click",()=>{
+        addgroupusers(groupId,res.data.response[i].id,name);
+      })
+      document.getElementById('created').appendChild(showuserButt)
+    }
+  })
+ }
+
+ function addgroupusers(groupId,id,name){
+  //console.log(id)
+  data={
+    groupId:groupId,
+    id:id
+  }
+  axios.post("http://localhost:4000/views/addgroupuser",data,{headers:{'Authorization':token}})
+  .then(resp=>{
+    //console.log(resp.data.resp.Members)
+    // if(resp.data.resp.Members===id){
+    //   console.log('admin is null')
+    //   let listbutt=document.createElement('button');
+    //   listbutt.innerHTML=name;
+    //   listbutt.addEventListener("click",()=>{
+    //     showmassage(groupId);
+    //   })
+    //   document.getElementById('created').appendChild(listbutt)
+    // }
+    
+    }
+  )
+ }
+ function getgroupdata(){
+  axios.get('http://localhost:4000/views/getgroupdata',{headers:{'Authorization':token}})
+  .then(res=>{
+    //console.log(res.data.response)
+    for(let i=0;i<res.data.response.length;i++){
+      if(res.data.response[i].Members==res.data.id){
+        let listbutt=document.createElement('button');
+      listbutt.innerHTML=res.data.response[i].groupId;
+      listbutt.addEventListener("click",()=>{
+        showmassage(res.data.response[i].groupId);
+      })
+      document.getElementById('created').appendChild(listbutt)
+      }
+    }
+  })
+ }
+ getgroupdata();
+
+ function showmassage(groupId){
+ localStorage.setItem('groupId',groupId)
+window.location.href="http://localhost:4000/views/display.html"
  }
 
  setInterval(()=>getdata() ,1000)
