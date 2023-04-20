@@ -21,7 +21,9 @@ app.use(route)
 User.hasMany(Massage);
 Massage.belongsTo(User)
 
-sequelize.sync();
+sequelize.sync(
+    //{force:true}
+    );
 
 
 app.listen(process.env.PORT,()=>{

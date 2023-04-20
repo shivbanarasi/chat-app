@@ -30,59 +30,125 @@
         </div>
       </nav>
 
-      <h1>this is your chat application</h1>
-      
-        <div id="yourMassage" style="height: 400px; width: 70%; border: 2px black solid; margin: 0 0 0 13%; overflow-y: auto;">
-         <p id="ok"></p>
+      <h1 id="personName" ></h1>
+      <div id="creategroup">
+        <label for="groupname">create group:</label>
+        <input type="text" id="groupname" name="groupname" style="width: 200px; max-width: 90%;" >
+        <button onclick="creategroup()" style="width: 200px;max-width: 90%;">create</button>
+        <div id="createdgroup">
+          <h4 id="created">created groups:</h4>
+
         </div>
-       <div style="background-color: aqua; width: 70%; margin: 0 0 5% 13%;">
+
+      </div>
+      
+        <div id="yourMassage" style="height: 400px; width: 70%; border: 2px black solid; margin: 0 0 0 25%; overflow-y: auto; ">
+         <p id="sending"></p>
+         <p id="receiving"></p>
+        </div>
+       <div style="background-color: aqua; width: 70%; margin: 0 0 5% 25%;">
         <label for="massage"></label>
         <input type="text" name="massage" id="massage" placeholder="write your massage here..." style="width: 83%;">
         <button onclick="massage()" style="width: 100px; background-color: blue;color: white;">send</button>
        </div>
-       <a href="/views/login.html" style="margin: 2% 20% 10% 30%;">logout</a> 
+       <a id="logout" href="/views/login.html" style="margin: 2% 20% 10% 30%;">logout</a> 
 </body>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
   const token=localStorage.getItem("token")
+  const groupId=localStorage.getItem('groupId')
   async function massage(){
     const data={
-    massage:document.getElementById("massage").value
+    massage:document.getElementById("massage").value,
+    groupId:groupId
   }
   // printMassage(data.massage)
-    
+    console.log(data.groupId)
    const response=await axios.post('http://localhost:4000/views/display.html',data,{headers:{'Authorization':token}});
    const res=await response.data; 
   }
   let id=0;
+  //let name='';
   async function getdata(){
-    console.log(id)
-    axios.get(`http://localhost:4000/views/getdata/${id}`,{headers:{'Authorization':token}})
+   // console.log(id)
+    axios.get(`http://localhost:4000/views/getdata/${id}/${groupId}`,{headers:{'Authorization':token}})
     .then( res=>{
+      console.log(res.data)
       for(let i=id;i<res.data.response.length;i++){
-    console.log(res.data.response[i].massage)
-    printMassage(res.data.response[i].massage)
+    //console.log(res.data.response[i].massage)
+    printMassage(res.data.response[i].massage,res.data.response[i].name)
     id=i
   
    }
-   id=res.data.response.length
-   
+   id=res.data.response.length;
+   //name=res.data.name;
+   document.getElementById('personName').innerHTML=`welcome ${res.data.name}`
     }
     ) 
  }
 console.log(id)
  getdata()
 
+ async function creategroup(){
+  const group={
+    name:document.getElementById("groupname").value
+  }
+  axios.post("http://localhost:4000/views/group",group,{headers:{'Authorization':token}})
+  .then(response=>{
+    alert('group created successfully')
+    console.log(response)
+  })
+ }
+
+ function grouplist(){
+  axios.get("http://localhost:4000/views/grouplist",{headers:{'Authorization':token}})
+ .then(res=>{
+  console.log(res.data.resp.length);
+  for(let i=0;i<res.data.resp.length;i++){
+    if(res.data.resp[i].name!=null){
+      let butt=document.createElement('button');
+    butt.innerHTML=`${res.data.resp[i].name}`;
+   butt.id=`${res.data.resp[i].name}`
+   butt.addEventListener("click",()=>{
+    showgroup(res.data.resp[i].groupId)
+   })
+    document.getElementById('created').appendChild(butt)
+    }
+
+
+  }
+ })
+ }
+
+ grouplist();
+
+ function showgroup(groupId){
+  // data={
+  //   groupId:groupId
+  // }
+  // axios.post("http://localhost:4000/views/addgroupuser",data,{headers:{'Authorization':token}})
+  // .then(resp=>{
+  //   console.log(resp.status)
+    localStorage.setItem('groupId',groupId)
+    window.location.href="http://localhost:4000/views/display.html"
+  //   document.getElementById
+  //   }
+  // )
+ }
 
  setInterval(()=>getdata() ,1000)
   
 
- async function printMassage(data){
+ async function printMassage(data,name){
       const para=document.createElement('p');
     para.id=data
-   para.innerHTML=`you : ${data}`;
+    para.className='show'
+   para.innerHTML=`${name} : ${data}`;
    document.getElementById('yourMassage').appendChild(para)
     }
-    
+    const logout=document.getElementById('logout');
+    logout.addEventListener("click",()=>{
+      localStorage.clear()
+    })
 </script>
 </html>

@@ -4,6 +4,13 @@ const Massage=sequelize.define('massage',{
     massage:{
         type:Sequelize.STRING
     },
+    name:{
+        type:Sequelize.STRING,
+        allowNull:false
+    },
+    groupId:{
+        type:Sequelize.STRING
+    }
    
 }
 );

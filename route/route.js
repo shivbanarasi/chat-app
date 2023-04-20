@@ -11,6 +11,12 @@ route.post('/views/login.html',logincontroller.loginuser)
 
 route.post('/views/display.html',authorization.authenticate,contentController.addMassage)
 
-route.get('/views/getdata/:id',authorization.authenticate,contentController.getdata)
+route.post('/views/group',authorization.authenticate,contentController.addgroup)
+
+route.get('/views/grouplist',authorization.authenticate,contentController.list)
+
+route.post('/views/addgroupuser',authorization.authenticate,contentController.addgroupuser)
+
+route.get('/views/getdata/:id/:groupId',authorization.authenticate,contentController.getdata)
 
 module.exports=route;
